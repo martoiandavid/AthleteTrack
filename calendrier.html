@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Calendrier - AthleteTrack</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #17202a;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+        }
+
+        .conteneur {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .titre {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .carte {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .mois {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .mois button {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .grille {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .jour-semaine {
+            text-align: center;
+            font-weight: bold;
+            padding: 10px 0;
+        }
+
+        .jour {
+            min-height: 80px;
+            background: #f4f6f8;
+            border-radius: 10px;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .numero {
+            font-weight: bold;
+        }
+
+        .entrainement {
+            margin-top: 6px;
+            background: #2563eb;
+            color: white;
+            padding: 5px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<header>
+
+    <h1>🏃 AthleteTrack</h1>
+
+   <nav>
+    <a href="index.html">Accueil</a>
+    <a href="performances.html">Performances</a>
+    <a href="entrainements.html">Entraînements</a>
+    <a href="profil.html">Profil</a>
+    <a href="progression.html">Progression</a>
+    <a href="calendrier.html">Calendrier</a>
+    <a href="statistiques.html">Statistiques</a>
+</nav>
+</header>
+
+
+<main class="conteneur">
+
+    <div class="titre">
+
+        <h2>🗓️ Mon calendrier</h2>
+
+        <p>
+            Visualise toutes tes séances.
+        </p>
+
+    </div>
+
+
+    <div class="carte">
+
+        <div class="mois">
+
+            <button onclick="moisPrecedent()">←</button>
+
+            <h2 id="nomMois"></h2>
+
+            <button onclick="moisSuivant()">→</button>
+
+        </div>
+
+
+        <div class="grille">
+
+            <div class="jour-semaine">Lun</div>
+            <div class="jour-semaine">Mar</div>
+            <div class="jour-semaine">Mer</div>
+            <div class="jour-semaine">Jeu</div>
+            <div class="jour-semaine">Ven</div>
+            <div class="jour-semaine">Sam</div>
+            <div class="jour-semaine">Dim</div>
+
+        </div>
+
+
+        <div
+            class="grille"
+            id="calendrier">
+        </div>
+
+    </div>
+
+</main>
+<script>
+
+let dateActuelle = new Date();
+
+function normaliserDate(date) {
+
+    if (!date) return "";
+
+    date = String(date).trim();
+
+    // Format 2026-07-30
+    if (date.includes("-")) {
+        return date.substring(0, 10);
+    }
+
+    // Format 30/07/2026
+    if (date.includes("/")) {
+
+        let morceaux = date.split("/");
+
+        if (morceaux.length === 3) {
+            return morceaux[2] + "-" +
+                   morceaux[1].padStart(2, "0") + "-" +
+                   morceaux[0].padStart(2, "0");
+        }
+    }
+
+    return date;
+}
+
+
+function afficherCalendrier() {
+
+    const calendrier =
+        document.getElementById("calendrier");
+
+    const nomMois =
+        document.getElementById("nomMois");
+
+    calendrier.innerHTML = "";
+
+    const annee =
+        dateActuelle.getFullYear();
+
+    const mois =
+        dateActuelle.getMonth();
+
+
+    const nomsMois = [
+        "Janvier",
+        "Février",
+        "Mars",
+        "Avril",
+        "Mai",
+        "Juin",
+        "Juillet",
+        "Août",
+        "Septembre",
+        "Octobre",
+        "Novembre",
+        "Décembre"
+    ];
+
+    nomMois.textContent =
+        nomsMois[mois] + " " + annee;
+
+
+    const premierJour =
+        new Date(annee, mois, 1).getDay();
+
+    const decalage =
+        premierJour === 0 ? 6 : premierJour - 1;
+
+
+    const nombreJours =
+        new Date(annee, mois + 1, 0).getDate();
+
+
+    const entrainements =
+        JSON.parse(
+            localStorage.getItem("entrainements") || "[]"
+        );
+
+
+    for (let i = 0; i < decalage; i++) {
+
+        calendrier.appendChild(
+            document.createElement("div")
+        );
+
+    }
+
+
+    for (let jour = 1; jour <= nombreJours; jour++) {
+
+        const cellule =
+            document.createElement("div");
+
+        cellule.className = "jour";
+
+
+        const dateTexte =
+            annee + "-" +
+            String(mois + 1).padStart(2, "0") + "-" +
+            String(jour).padStart(2, "0");
+
+
+        cellule.innerHTML =
+            "<div class='numero'>" + jour + "</div>";
+
+
+        entrainements.forEach(function(seance) {
+
+            const dateSeance =
+                normaliserDate(seance.date);
+
+
+            if (dateSeance === dateTexte) {
+
+                const bloc =
+                    document.createElement("div");
+
+                bloc.className = "entrainement";
+
+                bloc.textContent =
+                    "🏋️ " +
+                    (seance.sport || "Entraînement");
+
+
+                cellule.appendChild(bloc);
+
+            }
+
+        });
+
+
+        calendrier.appendChild(cellule);
+
+    }
+
+}
+
+
+function moisPrecedent() {
+
+    dateActuelle.setMonth(
+        dateActuelle.getMonth() - 1
+    );
+
+    afficherCalendrier();
+
+}
+
+
+function moisSuivant() {
+
+    dateActuelle.setMonth(
+        dateActuelle.getMonth() + 1
+    );
+
+    afficherCalendrier();
+
+}
+
+
+afficherCalendrier();
+
+</script>
+</body>
+
+</html>

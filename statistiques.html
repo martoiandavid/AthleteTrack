@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Statistiques - AthleteTrack</title>
+
+<style>
+
+body {
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f4f6f8;
+    color:#17202a;
+}
+
+header {
+    background:#111827;
+    color:white;
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+nav a {
+    color:white;
+    text-decoration:none;
+    margin-left:15px;
+}
+
+.conteneur {
+    max-width:900px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.carte {
+    background:white;
+    padding:25px;
+    margin-bottom:25px;
+    border-radius:18px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+.stats {
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.stat {
+    background:#f4f6f8;
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
+}
+
+.stat strong {
+    display:block;
+    font-size:30px;
+    margin-top:10px;
+}
+
+@media(max-width:700px){
+
+header {
+    flex-direction:column;
+    gap:15px;
+}
+
+.stats {
+    grid-template-columns:1fr;
+}
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🏃 AthleteTrack</h1>
+
+<nav>
+<a href="index.html">Accueil</a>
+<a href="profil.html">Profil</a>
+<a href="performances.html">Performances</a>
+<a href="progression.html">Progression</a>
+<a href="entrainements.html">Entraînements</a>
+<a href="statistiques.html">Statistiques</a>
+</nav>
+
+</header>
+
+
+<main class="conteneur">
+
+
+<div class="carte">
+
+<h2>📊 Mes statistiques</h2>
+
+<div class="stats">
+
+
+<div class="stat">
+🏋️ Séances totales
+<strong id="totalSeances">0</strong>
+</div>
+
+
+<div class="stat">
+🔥 Cette semaine
+<strong id="seancesSemaine">0</strong>
+</div>
+
+
+<div class="stat">
+⏱️ Temps total
+<strong id="tempsTotal">0</strong>
+</div>
+
+
+<div class="stat">
+🏃 Sport préféré
+<strong id="sportPrefere">-</strong>
+</div>
+
+
+</div>
+
+</div>
+
+
+
+<div class="carte">
+
+<h2>🏆 Mes records</h2>
+
+<div id="records">
+Chargement...
+</div>
+
+</div>
+
+
+
+</main>
+
+
+
+<script>
+
+
+const entrainements =
+JSON.parse(localStorage.getItem("entrainements") || "[]");
+
+
+const historique =
+JSON.parse(localStorage.getItem("historique") || "[]");
+
+
+
+// TOTAL SEANCES
+
+document.getElementById("totalSeances").textContent =
+entrainements.length;
+
+
+
+// SEANCES CETTE SEMAINE
+
+const aujourdHui = new Date();
+
+const debutSemaine = new Date(aujourdHui);
+
+debutSemaine.setDate(
+aujourdHui.getDate() - aujourdHui.getDay() + 1
+);
+
+
+const cetteSemaine =
+entrainements.filter(seance => {
+
+const date = new Date(seance.date);
+
+return date >= debutSemaine &&
+date <= aujourdHui;
+
+}).length;
+
+
+document.getElementById("seancesSemaine").textContent =
+cetteSemaine;
+
+
+
+// TEMPS TOTAL
+
+let totalMinutes = 0;
+
+
+entrainements.forEach(seance => {
+
+let duree = seance.duree;
+
+
+if(duree){
+
+if(duree.includes("h")){
+
+let morceaux = duree.split("h");
+
+totalMinutes +=
+parseInt(morceaux[0])*60;
+
+if(morceaux[1])
+totalMinutes += parseInt(morceaux[1]);
+
+}
+
+else {
+
+totalMinutes += parseInt(duree);
+
+}
+
+}
+
+});
+
+
+let heures =
+Math.floor(totalMinutes/60);
+
+let minutes =
+totalMinutes%60;
+
+
+document.getElementById("tempsTotal").textContent =
+heures + "h " + minutes + "min";
+
+
+
+// SPORT LE PLUS FAIT
+
+let sports = {};
+
+
+entrainements.forEach(seance=>{
+
+sports[seance.sport] =
+(sports[seance.sport] || 0)+1;
+
+});
+
+
+let meilleurSport="-";
+let max=0;
+
+
+for(let sport in sports){
+
+if(sports[sport]>max){
+
+max=sports[sport];
+meilleurSport=sport;
+
+}
+
+}
+
+
+document.getElementById("sportPrefere").textContent =
+meilleurSport;
+
+
+
+// RECORDS
+
+const zoneRecords =
+document.getElementById("records");
+
+
+let temps50 =
+historique.map(p=>parseFloat(p.temps50))
+.filter(n=>!isNaN(n));
+
+
+let temps100 =
+historique.map(p=>parseFloat(p.temps100))
+.filter(n=>!isNaN(n));
+
+
+let tractions =
+historique.map(p=>parseFloat(p.tractions))
+.filter(n=>!isNaN(n));
+
+
+
+zoneRecords.innerHTML = `
+
+<p>⚡ Meilleur 50 m :
+<strong>${temps50.length ? Math.min(...temps50)+" s" : "-"}</strong>
+</p>
+
+<p>🏃 Meilleur 100 m :
+<strong>${temps100.length ? Math.min(...temps100)+" s" : "-"}</strong>
+</p>
+
+<p>💪 Max tractions :
+<strong>${tractions.length ? Math.max(...tractions) : "-"}</strong>
+</p>
+
+`;
+
+
+</script>
+
+
+</body>
+</html>

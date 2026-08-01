@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon profil - AthleteTrack</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #17202a;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        .profil {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            background: #2563eb;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+        }
+
+        .profil h2 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .sous-titre {
+            text-align: center;
+            color: #667085;
+            margin-bottom: 30px;
+        }
+
+        .info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .info div {
+            background: #f4f6f8;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .info strong {
+            display: block;
+            margin-bottom: 7px;
+        }
+
+        .objectif {
+            grid-column: 1 / -1;
+        }
+
+        .note {
+            margin-top: 20px;
+            background: #eef4ff;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .note strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .modifier {
+            display: block;
+            margin: 30px auto 0;
+            padding: 13px 22px;
+            background: #2563eb;
+            color: white;
+            border-radius: 10px;
+        }
+
+        .formulaire {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .formulaire label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .formulaire input,
+        .formulaire select,
+        .formulaire textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #d0d5dd;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+        }
+
+        .formulaire textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .sauvegarder {
+            margin-top: 25px;
+            padding: 13px 22px;
+            background: #16a34a;
+            color: white;
+            border-radius: 10px;
+        }
+
+        .annuler {
+            margin-top: 25px;
+            margin-left: 10px;
+            padding: 13px 22px;
+            background: #e5e7eb;
+            color: #17202a;
+            border-radius: 10px;
+        }
+
+        .retour {
+            display: inline-block;
+            margin-top: 30px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        @media (max-width: 700px) {
+            header {
+                padding: 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                text-align: center;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 5px 8px;
+            }
+
+            .profil {
+                margin: 20px;
+                padding: 25px;
+            }
+
+            .info {
+                grid-template-columns: 1fr;
+            }
+
+            .objectif {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🏃 AthleteTrack</h1>
+
+    <nav>
+        <a href="index.html">Accueil</a>
+        <a href="performances.html">Performances</a>
+        <a href="entrainements.html">Entraînements</a>
+        <a href="profil.html">Profil</a>
+        <a href="progression.html">Progression</a>
+        <a href="calendrier.html">Calendrier</a>
+        <a href="statistiques.html">Statistiques</a>
+    </nav>
+</header>
+
+<main class="profil">
+
+    <div class="avatar">🏃</div>
+
+    <h2 id="nomComplet">David</h2>
+
+    <p class="sous-titre">
+        Mon profil sportif
+    </p>
+
+    <div class="info">
+
+        <div>
+            <strong>👤 Prénom</strong>
+            <span id="affichagePrenom">David</span>
+        </div>
+
+        <div>
+            <strong>👤 Nom</strong>
+            <span id="affichageNom">-</span>
+        </div>
+
+        <div>
+            <strong>🎂 Âge</strong>
+            <span id="affichageAge">14 ans</span>
+        </div>
+
+        <div>
+            <strong>🏃 Sport</strong>
+            <span id="affichageSport">Rugby / Sprint</span>
+        </div>
+
+        <div>
+            <strong>📏 Taille</strong>
+            <span id="affichageTaille">-</span>
+        </div>
+
+        <div>
+            <strong>⚖️ Poids</strong>
+            <span id="affichagePoids">-</span>
+        </div>
+
+        <div class="objectif">
+            <strong>🎯 Objectif principal</strong>
+            <span id="affichageObjectif">Progresser en vitesse ⚡</span>
+        </div>
+
+    </div>
+
+    <div class="note">
+        <strong>💬 Ma petite note</strong>
+        <span id="affichageNote">
+            Toujours essayer de progresser 💪🔥
+        </span>
+    </div>
+
+    <button class="modifier" onclick="ouvrirEdition()">
+        ✏️ Modifier mon profil
+    </button>
+
+    <div class="formulaire" id="formulaire">
+
+        <h2>✏️ Modifier mon profil</h2>
+
+        <label>Prénom</label>
+        <input type="text" id="prenom">
+
+        <label>Nom</label>
+        <input type="text" id="nom">
+
+        <label>Âge</label>
+        <input type="number" id="age">
+
+        <label>Sport</label>
+        <input type="text" id="sport" placeholder="Ex : Rugby / Sprint">
+
+        <label>Taille</label>
+        <input type="number" id="taille" placeholder="Ex : 170">
+
+        <label>Poids</label>
+        <input type="number" id="poids" placeholder="Ex : 70">
+
+        <label>🎯 Objectif principal</label>
+        <select id="objectif">
+            <option value="Devenir plus rapide ⚡">Devenir plus rapide ⚡</option>
+            <option value="Devenir plus fort 💪">Devenir plus fort 💪</option>
+            <option value="Améliorer mon endurance 🫁">Améliorer mon endurance 🫁</option>
+            <option value="Prendre du muscle 🏋️">Prendre du muscle 🏋️</option>
+            <option value="Perdre du poids">Perdre du poids</option>
+            <option value="Améliorer mes performances 🏆">Améliorer mes performances 🏆</option>
+            <option value="Autre">Autre</option>
+        </select>
+
+        <label>💬 Ma petite note</label>
+        <textarea id="note" placeholder="Ex : Je veux devenir meilleur chaque jour 💪"></textarea>
+
+        <button class="sauvegarder" onclick="sauvegarderProfil()">
+            💾 Sauvegarder
+        </button>
+
+        <button class="annuler" onclick="fermerEdition()">
+            Annuler
+        </button>
+
+    </div>
+
+    <a class="retour" href="index.html">
+        ← Retour à l'accueil
+    </a>
+
+</main>
+
+<script>
+
+const profilParDefaut = {
+    prenom: "David",
+    nom: "",
+    age: "14",
+    sport: "Rugby / Sprint",
+    taille: "",
+    poids: "",
+    objectif: "Devenir plus rapide ⚡",
+    note: "Toujours essayer de progresser 💪🔥"
+};
+
+let profil =
+    JSON.parse(localStorage.getItem("profilAthleteTrack"))
+    || profilParDefaut;
+
+
+function afficherProfil() {
+
+    document.getElementById("nomComplet").textContent =
+        (profil.prenom + " " + profil.nom).trim();
+
+    document.getElementById("affichagePrenom").textContent =
+        profil.prenom || "-";
+
+    document.getElementById("affichageNom").textContent =
+        profil.nom || "-";
+
+    document.getElementById("affichageAge").textContent =
+        profil.age ? profil.age + " ans" : "-";
+
+    document.getElementById("affichageSport").textContent =
+        profil.sport || "-";
+
+    document.getElementById("affichageTaille").textContent =
+        profil.taille ? profil.taille + " cm" : "-";
+
+    document.getElementById("affichagePoids").textContent =
+        profil.poids ? profil.poids + " kg" : "-";
+
+    document.getElementById("affichageObjectif").textContent =
+        profil.objectif || "-";
+
+    document.getElementById("affichageNote").textContent =
+        profil.note || "Aucune note pour le moment.";
+}
+
+
+function ouvrirEdition() {
+
+    document.getElementById("prenom").value = profil.prenom || "";
+    document.getElementById("nom").value = profil.nom || "";
+    document.getElementById("age").value = profil.age || "";
+    document.getElementById("sport").value = profil.sport || "";
+    document.getElementById("taille").value = profil.taille || "";
+    document.getElementById("poids").value = profil.poids || "";
+    document.getElementById("objectif").value = profil.objectif || "";
+    document.getElementById("note").value = profil.note || "";
+
+    document.getElementById("formulaire").style.display = "block";
+}
+
+
+function fermerEdition() {
+
+    document.getElementById("formulaire").style.display = "none";
+}
+
+
+function sauvegarderProfil() {
+
+    profil = {
+
+        prenom: document.getElementById("prenom").value,
+        nom: document.getElementById("nom").value,
+        age: document.getElementById("age").value,
+        sport: document.getElementById("sport").value,
+        taille: document.getElementById("taille").value,
+        poids: document.getElementById("poids").value,
+        objectif: document.getElementById("objectif").value,
+        note: document.getElementById("note").value
+
+    };
+
+    localStorage.setItem(
+        "profilAthleteTrack",
+        JSON.stringify(profil)
+    );
+
+    afficherProfil();
+    fermerEdition();
+
+    alert("✅ Profil sauvegardé !");
+}
+
+
+afficherProfil();
+
+</script>
+
+</body>
+</html>

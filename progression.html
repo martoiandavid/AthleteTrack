@@ -1,0 +1,1454 @@
+<!DOCTYPE html><html lang="fr"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Progression - AthleteTrack</title>
+
+<style>
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        color: #17202a;
+    }
+
+    header {
+        background: #111827;
+        color: white;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    header h1 {
+        margin: 0;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        margin-left: 15px;
+    }
+
+    .conteneur {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .titre {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .carte {
+        background: white;
+        padding: 25px;
+        margin-bottom: 25px;
+        border-radius: 18px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .objectif {
+        background: #f4f6f8;
+        padding: 20px;
+        margin-top: 15px;
+        border-radius: 15px;
+    }
+
+    .objectif h3 {
+        margin-top: 0;
+    }
+
+    .ligne {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+
+    .barre {
+        width: 100%;
+        height: 14px;
+        background: #e5e7eb;
+        border-radius: 20px;
+        overflow: hidden;
+        margin-top: 10px;
+    }
+
+    .progression {
+        height: 100%;
+        width: 0%;
+        background: #2563eb;
+        border-radius: 20px;
+        transition: width 0.4s;
+    }
+
+    .resultat {
+        background: #f4f6f8;
+        padding: 15px;
+        margin-top: 12px;
+        border-radius: 12px;
+    }
+
+    .records {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+
+    .record {
+        background: #f4f6f8;
+        padding: 20px;
+        border-radius: 15px;
+        text-align: center;
+    }
+
+    .record strong {
+        display: block;
+        font-size: 26px;
+        margin-top: 8px;
+    }
+
+    canvas {
+        width: 100%;
+        max-width: 800px;
+        height: 350px;
+        border: 1px solid #ddd;
+        margin-top: 15px;
+    }
+
+    button {
+        border: none;
+        padding: 13px 20px;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .modifier {
+        background: #2563eb;
+        color: white;
+        margin-top: 10px;
+    }
+
+    .sauvegarder {
+        background: #16a34a;
+        color: white;
+        margin-top: 20px;
+    }
+
+    .formulaire {
+        display: none;
+        margin-top: 20px;
+    }
+
+    .formulaire label {
+        display: block;
+        font-weight: bold;
+        margin-top: 15px;
+        margin-bottom: 6px;
+    }
+
+    .formulaire input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px;
+        border: 1px solid #d0d5dd;
+        border-radius: 10px;
+        font-size: 16px;
+    }
+
+    @media (max-width: 700px) {
+
+        header {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        nav {
+            text-align: center;
+        }
+
+        nav a {
+            display: inline-block;
+            margin: 5px 7px;
+        }
+
+        .conteneur {
+            margin: 20px;
+            padding: 10px;
+        }
+
+        .records {
+            grid-template-columns: 1fr;
+        }
+    }
+
+</style>
+
+</head><body><header><h1>🏃 AthleteTrack</h1>
+
+<nav>
+    <a href="index.html">Accueil</a>
+    <a href="performances.html">Performances</a>
+    <a href="entrainements.html">Entraînements</a>
+    <a href="profil.html">Profil</a>
+    <a href="progression.html">Progression</a>
+    <a href="calendrier.html">Calendrier</a>
+</nav>
+
+</header><main class="conteneur"><div class="titre">
+
+    <h2>🎯 Mes objectifs</h2>
+
+    <p>Fixe tes objectifs et regarde ta progression.</p>
+
+</div>
+
+
+<!-- OBJECTIFS -->
+
+<div class="carte">
+
+    <h3>🎯 Mes objectifs sportifs</h3>
+
+    <div id="objectifs">
+
+        <p>Chargement...</p>
+
+    </div>
+
+    <button class="modifier" onclick="ouvrirObjectifs()">
+        ✏️ Modifier mes objectifs
+    </button>
+
+
+    <div class="formulaire" id="formulaireObjectifs">
+
+        <h3>Modifier mes objectifs</h3>
+
+        <label>⚡ Objectif 50 m (secondes)</label>
+        <input type="number" step="0.01" id="objectif50" placeholder="Ex : 6.70">
+
+
+        <label>🏃 Objectif 100 m (secondes)</label>
+        <input type="number" step="0.01" id="objectif100" placeholder="Ex : 12.50">
+
+
+        <label>💪 Objectif tractions</label>
+        <input type="number" id="objectifTractions" placeholder="Ex : 15">
+
+
+        <button class="sauvegarder" onclick="sauvegarderObjectifs()">
+            💾 Sauvegarder mes objectifs
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- RECORDS -->
+
+<div class="carte">
+
+    <h3>🏆 Mes records</h3>
+
+    <div class="records" id="records">
+        Calcul des records...
+    </div>
+
+</div>
+
+
+<!-- HISTORIQUE -->
+
+<div class="carte">
+
+    <h3>📅 Historique</h3>
+
+    <div id="historique">
+        Chargement...
+    </div>
+
+</div>
+
+
+<!-- GRAPHIQUE -->
+
+<div class="carte">
+
+    <h3>📈 Évolution du 50 mètres</h3>
+
+    <canvas id="graphique50" width="800" height="350"></canvas>
+
+</div>
+
+</main><script>
+
+const historique = JSON.parse(
+    localStorage.getItem("historique") || "[]"
+);
+
+
+/* =========================
+   RECORDS ACTUELS
+========================= */
+
+const temps50 = historique
+    .map(p => parseFloat(String(p.temps50).replace(",", ".")))
+    .filter(n => !isNaN(n));
+
+const temps100 = historique
+    .map(p => parseFloat(String(p.temps100).replace(",", ".")))
+    .filter(n => !isNaN(n));
+
+const tractions = historique
+    .map(p => parseFloat(String(p.tractions).replace(",", ".")))
+    .filter(n => !isNaN(n));
+
+
+const meilleur50 = temps50.length
+    ? Math.min(...temps50)
+    : null;
+
+const meilleur100 = temps100.length
+    ? Math.min(...temps100)
+    : null;
+
+const maxTractions = tractions.length
+    ? Math.max(...tractions)
+    : null;
+
+
+/* =========================
+   OBJECTIFS
+========================= */
+
+let objectifs = JSON.parse(
+    localStorage.getItem("objectifsAthleteTrack") || "null"
+);
+
+
+function afficherObjectifs() {
+
+    const zone = document.getElementById("objectifs");
+
+    if (!objectifs) {
+
+        zone.innerHTML = `
+            <p>🎯 Tu n'as pas encore défini tes objectifs.</p>
+            <p>Exemple : viser 6,70 s au 50 m ou 15 tractions.</p>
+        `;
+
+        return;
+    }
+
+
+    zone.innerHTML = `
+
+        ${creerObjectif(
+            "⚡ 50 m",
+            meilleur50,
+            objectifs.temps50,
+            "s",
+            true
+        )}
+
+        ${creerObjectif(
+            "🏃 100 m",
+            meilleur100,
+            objectifs.temps100,
+            "s",
+            true
+        )}
+
+        ${creerObjectif(
+            "💪 Tractions",
+            maxTractions,
+            objectifs.tractions,
+            "",
+            false
+        )}
+
+    `;
+}
+
+
+function creerObjectif(titre, actuel, objectif, unite, temps) {
+
+    if (objectif === null || objectif === undefined || objectif === "") {
+
+        return `
+            <div class="objectif">
+                <h3>${titre}</h3>
+                <p>🎯 Aucun objectif défini.</p>
+            </div>
+        `;
+
+    }
+
+
+    if (actuel === null) {
+
+        return `
+            <div class="objectif">
+                <h3>${titre}</h3>
+                <p>🎯 Objectif : <strong>${objectif}${unite}</strong></p>
+                <p>📊 Pas encore de performance enregistrée.</p>
+            </div>
+        `;
+
+    }
+
+
+    let depart = objectif;
+
+    if (temps) {
+
+        depart = Math.max(
+            actuel + Math.abs(actuel - objectif),
+            objectif + 0.01
+        );
+
+    } else {
+
+        depart = Math.min(
+            Math.max(actuel - Math.abs(objectif - actuel), 0),
+            objectif - 1
+        );
+
+    }
+
+
+    let pourcentage;
+
+    if (temps) {
+
+        pourcentage =
+            ((depart - actuel) / (depart - objectif)) * 100;
+
+    } else {
+
+        pourcentage =
+            ((actuel - depart) / (objectif - depart)) * 100;
+
+    }
+
+
+    pourcentage = Math.max(
+        0,
+        Math.min(100, pourcentage)
+    );
+
+
+    const atteint =
+        temps
+            ? actuel <= objectif
+            : actuel >= objectif;
+
+
+    if (atteint) {
+        pourcentage = 100;
+    }
+
+
+    return `
+
+        <div class="objectif">
+
+            <div class="ligne">
+                <strong>${titre}</strong>
+                <strong>
+                    ${atteint ? "🏆 Objectif atteint !" : ""}
+                </strong>
+            </div>
+
+            <p>
+                Actuel :
+                <strong>${actuel}${unite}</strong>
+            </p>
+
+            <p>
+                🎯 Objectif :
+                <strong>${objectif}${unite}</strong>
+            </p>
+
+            <div class="barre">
+                <div
+                    class="progression"
+                    style="width: ${pourcentage}%">
+                </div>
+            </div>
+
+            <p>
+                ${Math.round(pourcentage)} % de progression
+            </p>
+
+        </div>
+
+    `;
+}
+
+
+function ouvrirObjectifs() {
+
+    document.getElementById("formulaireObjectifs").style.display =
+        "block";
+
+    if (objectifs) {
+
+        document.getElementById("objectif50").value =
+            objectifs.temps50 || "";
+
+        document.getElementById("objectif100").value =
+            objectifs.temps100 || "";
+
+        document.getElementById("objectifTractions").value =
+            objectifs.tractions || "";
+
+    }
+
+}
+
+
+function sauvegarderObjectifs() {
+
+    const temps50Objectif =
+        parseFloat(
+            document.getElementById("objectif50").value
+        );
+
+    const temps100Objectif =
+        parseFloat(
+            document.getElementById("objectif100").value
+        );
+
+    const tractionsObjectif =
+        parseFloat(
+            document.getElementById("objectifTractions").value
+        );
+
+
+    objectifs = {
+
+        temps50: !isNaN(temps50Objectif)
+            ? temps50Objectif
+            : "",
+
+        temps100: !isNaN(temps100Objectif)
+            ? temps100Objectif
+            : "",
+
+        tractions: !isNaN(tractionsObjectif)
+            ? tractionsObjectif
+            : ""
+
+    };
+
+
+    localStorage.setItem(
+        "objectifsAthleteTrack",
+        JSON.stringify(objectifs)
+    );
+
+
+    afficherObjectifs();
+
+
+    document.getElementById("formulaireObjectifs").style.display =
+        "none";
+
+
+    alert("🎯 Objectifs sauvegardés !");
+
+}
+
+
+/* =========================
+   HISTORIQUE
+========================= */
+
+const zoneHistorique =
+    document.getElementById("historique");
+
+
+if (historique.length === 0) {
+
+    zoneHistorique.innerHTML =
+        "<p>❌ Aucun historique trouvé.</p>";
+
+} else {
+
+    zoneHistorique.innerHTML = "";
+
+    historique.forEach(function(performance) {
+
+        const resultat =
+            document.createElement("div");
+
+        resultat.className = "resultat";
+
+        resultat.innerHTML =
+            "<strong>📅 " + performance.date + "</strong><br><br>" +
+            "🏃 50 m : " + performance.temps50 + " s<br>" +
+            "🏃 100 m : " + performance.temps100 + " s<br>" +
+            "💪 Tractions : " + performance.tractions;
+
+        zoneHistorique.appendChild(resultat);
+
+    });
+
+}
+
+
+/* =========================
+   RECORDS
+========================= */
+
+const zoneRecords =
+    document.getElementById("records");
+
+
+zoneRecords.innerHTML = `
+
+    <div class="record">
+        ⚡ 50 m
+        <strong>
+            ${meilleur50 !== null ? meilleur50 + " s" : "-"}
+        </strong>
+    </div>
+
+    <div class="record">
+        🏃 100 m
+        <strong>
+            ${meilleur100 !== null ? meilleur100 + " s" : "-"}
+        </strong>
+    </div>
+
+    <div class="record">
+        💪 Tractions
+        <strong>
+            ${maxTractions !== null ? maxTractions : "-"}
+        </strong>
+    </div>
+
+`;
+
+
+/* =========================
+   GRAPHIQUE 50 M
+========================= */
+
+const canvas =
+    document.getElementById("graphique50");
+
+const ctx =
+    canvas.getContext("2d");
+
+
+const valeurs = historique
+    .map(function(performance) {
+
+        return parseFloat(
+            String(performance.temps50)
+                .replace(",", ".")
+        );
+
+    })
+    .filter(function(valeur) {
+
+        return !isNaN(valeur);
+
+    });
+
+
+if (valeurs.length > 0) {
+
+    const marge = 50;
+
+    const largeur =
+        canvas.width - marge * 2;
+
+    const hauteur =
+        canvas.height - marge * 2;
+
+    const maximum =
+        Math.max(...valeurs);
+
+    const minimum =
+        Math.min(...valeurs);
+
+
+    ctx.beginPath();
+
+
+    valeurs.forEach(function(valeur, index) {
+
+        const x =
+            marge +
+            (index / Math.max(valeurs.length - 1, 1))
+            * largeur;
+
+
+        const y =
+            marge +
+            ((valeur - minimum) /
+            Math.max(maximum - minimum, 0.1))
+            * hauteur;
+
+
+        if (index === 0) {
+
+            ctx.moveTo(x, y);
+
+        } else {
+
+            ctx.lineTo(x, y);
+
+        }
+
+    });
+
+
+    ctx.stroke();
+
+}
+
+
+/* =========================
+   LANCEMENT
+========================= */
+
+afficherObjectifs();
+
+</script></body></html><!DOCTYPE html><html lang="fr"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Progression - AthleteTrack</title>
+
+<style>
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        color: #17202a;
+    }
+
+    header {
+        background: #111827;
+        color: white;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    header h1 {
+        margin: 0;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        margin-left: 15px;
+    }
+
+    .conteneur {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .titre {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .carte {
+        background: white;
+        padding: 25px;
+        margin-bottom: 25px;
+        border-radius: 18px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .objectif {
+        background: #f4f6f8;
+        padding: 20px;
+        margin-top: 15px;
+        border-radius: 15px;
+    }
+
+    .objectif h3 {
+        margin-top: 0;
+    }
+
+    .ligne {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+
+    .barre {
+        width: 100%;
+        height: 14px;
+        background: #e5e7eb;
+        border-radius: 20px;
+        overflow: hidden;
+        margin-top: 10px;
+    }
+
+    .progression {
+        height: 100%;
+        width: 0%;
+        background: #2563eb;
+        border-radius: 20px;
+        transition: width 0.4s;
+    }
+
+    .resultat {
+        background: #f4f6f8;
+        padding: 15px;
+        margin-top: 12px;
+        border-radius: 12px;
+    }
+
+    .records {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+
+    .record {
+        background: #f4f6f8;
+        padding: 20px;
+        border-radius: 15px;
+        text-align: center;
+    }
+
+    .record strong {
+        display: block;
+        font-size: 26px;
+        margin-top: 8px;
+    }
+
+    canvas {
+        width: 100%;
+        max-width: 800px;
+        height: 350px;
+        border: 1px solid #ddd;
+        margin-top: 15px;
+    }
+
+    button {
+        border: none;
+        padding: 13px 20px;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .modifier {
+        background: #2563eb;
+        color: white;
+        margin-top: 10px;
+    }
+
+    .sauvegarder {
+        background: #16a34a;
+        color: white;
+        margin-top: 20px;
+    }
+
+    .formulaire {
+        display: none;
+        margin-top: 20px;
+    }
+
+    .formulaire label {
+        display: block;
+        font-weight: bold;
+        margin-top: 15px;
+        margin-bottom: 6px;
+    }
+
+    .formulaire input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px;
+        border: 1px solid #d0d5dd;
+        border-radius: 10px;
+        font-size: 16px;
+    }
+
+    @media (max-width: 700px) {
+
+        header {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        nav {
+            text-align: center;
+        }
+
+        nav a {
+            display: inline-block;
+            margin: 5px 7px;
+        }
+
+        .conteneur {
+            margin: 20px;
+            padding: 10px;
+        }
+
+        .records {
+            grid-template-columns: 1fr;
+        }
+    }
+
+</style>
+
+</head><body><header><h1>🏃 AthleteTrack</h1>
+
+<nav>
+    <a href="index.html">Accueil</a>
+    <a href="performances.html">Performances</a>
+    <a href="entrainements.html">Entraînements</a>
+    <a href="profil.html">Profil</a>
+    <a href="progression.html">Progression</a>
+    <a href="calendrier.html">Calendrier</a>
+    <a href="statistiques.html">Statistiques</a>
+</nav>
+
+</header><main class="conteneur"><div class="titre">
+
+    <h2>🎯 Mes objectifs</h2>
+
+    <p>Fixe tes objectifs et regarde ta progression.</p>
+
+</div>
+
+
+<!-- OBJECTIFS -->
+
+<div class="carte">
+
+    <h3>🎯 Mes objectifs sportifs</h3>
+
+    <div id="objectifs">
+
+        <p>Chargement...</p>
+
+    </div>
+
+    <button class="modifier" onclick="ouvrirObjectifs()">
+        ✏️ Modifier mes objectifs
+    </button>
+
+
+    <div class="formulaire" id="formulaireObjectifs">
+
+        <h3>Modifier mes objectifs</h3>
+
+        <label>⚡ Objectif 50 m (secondes)</label>
+        <input type="number" step="0.01" id="objectif50" placeholder="Ex : 6.70">
+
+
+        <label>🏃 Objectif 100 m (secondes)</label>
+        <input type="number" step="0.01" id="objectif100" placeholder="Ex : 12.50">
+
+
+        <label>💪 Objectif tractions</label>
+        <input type="number" id="objectifTractions" placeholder="Ex : 15">
+
+
+        <button class="sauvegarder" onclick="sauvegarderObjectifs()">
+            💾 Sauvegarder mes objectifs
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- RECORDS -->
+
+<div class="carte">
+
+    <h3>🏆 Mes records</h3>
+
+    <div class="records" id="records">
+        Calcul des records...
+    </div>
+
+</div>
+
+
+<!-- HISTORIQUE -->
+
+<div class="carte">
+
+    <h3>📅 Historique</h3>
+
+    <div id="historique">
+        Chargement...
+    </div>
+
+</div>
+
+
+<!-- GRAPHIQUE -->
+
+<div class="carte">
+
+    <h3>📈 Évolution du 50 mètres</h3>
+
+    <canvas id="graphique50" width="800" height="350"></canvas>
+
+</div>
+
+</main><script>
+
+const historique = JSON.parse(
+    localStorage.getItem("historique") || "[]"
+);
+
+
+/* =========================
+   RECORDS ACTUELS
+========================= */
+
+const temps50 = historique
+    .map(p => parseFloat(String(p.temps50).replace(",", ".")))
+    .filter(n => !isNaN(n));
+
+const temps100 = historique
+    .map(p => parseFloat(String(p.temps100).replace(",", ".")))
+    .filter(n => !isNaN(n));
+
+const tractions = historique
+    .map(p => parseFloat(String(p.tractions).replace(",", ".")))
+    .filter(n => !isNaN(n));
+
+
+const meilleur50 = temps50.length
+    ? Math.min(...temps50)
+    : null;
+
+const meilleur100 = temps100.length
+    ? Math.min(...temps100)
+    : null;
+
+const maxTractions = tractions.length
+    ? Math.max(...tractions)
+    : null;
+
+
+/* =========================
+   OBJECTIFS
+========================= */
+
+let objectifs = JSON.parse(
+    localStorage.getItem("objectifsAthleteTrack") || "null"
+);
+
+
+function afficherObjectifs() {
+
+    const zone = document.getElementById("objectifs");
+
+    if (!objectifs) {
+
+        zone.innerHTML = `
+            <p>🎯 Tu n'as pas encore défini tes objectifs.</p>
+            <p>Exemple : viser 6,70 s au 50 m ou 15 tractions.</p>
+        `;
+
+        return;
+    }
+
+
+    zone.innerHTML = `
+
+        ${creerObjectif(
+            "⚡ 50 m",
+            meilleur50,
+            objectifs.temps50,
+            "s",
+            true
+        )}
+
+        ${creerObjectif(
+            "🏃 100 m",
+            meilleur100,
+            objectifs.temps100,
+            "s",
+            true
+        )}
+
+        ${creerObjectif(
+            "💪 Tractions",
+            maxTractions,
+            objectifs.tractions,
+            "",
+            false
+        )}
+
+    `;
+}
+
+
+function creerObjectif(titre, actuel, objectif, unite, temps) {
+
+    if (objectif === null || objectif === undefined || objectif === "") {
+
+        return `
+            <div class="objectif">
+                <h3>${titre}</h3>
+                <p>🎯 Aucun objectif défini.</p>
+            </div>
+        `;
+
+    }
+
+
+    if (actuel === null) {
+
+        return `
+            <div class="objectif">
+                <h3>${titre}</h3>
+                <p>🎯 Objectif : <strong>${objectif}${unite}</strong></p>
+                <p>📊 Pas encore de performance enregistrée.</p>
+            </div>
+        `;
+
+    }
+
+
+    let depart = objectif;
+
+    if (temps) {
+
+        depart = Math.max(
+            actuel + Math.abs(actuel - objectif),
+            objectif + 0.01
+        );
+
+    } else {
+
+        depart = Math.min(
+            Math.max(actuel - Math.abs(objectif - actuel), 0),
+            objectif - 1
+        );
+
+    }
+
+
+    let pourcentage;
+
+    if (temps) {
+
+        pourcentage =
+            ((depart - actuel) / (depart - objectif)) * 100;
+
+    } else {
+
+        pourcentage =
+            ((actuel - depart) / (objectif - depart)) * 100;
+
+    }
+
+
+    pourcentage = Math.max(
+        0,
+        Math.min(100, pourcentage)
+    );
+
+
+    const atteint =
+        temps
+            ? actuel <= objectif
+            : actuel >= objectif;
+
+
+    if (atteint) {
+        pourcentage = 100;
+    }
+
+
+    return `
+
+        <div class="objectif">
+
+            <div class="ligne">
+                <strong>${titre}</strong>
+                <strong>
+                    ${atteint ? "🏆 Objectif atteint !" : ""}
+                </strong>
+            </div>
+
+            <p>
+                Actuel :
+                <strong>${actuel}${unite}</strong>
+            </p>
+
+            <p>
+                🎯 Objectif :
+                <strong>${objectif}${unite}</strong>
+            </p>
+
+            <div class="barre">
+                <div
+                    class="progression"
+                    style="width: ${pourcentage}%">
+                </div>
+            </div>
+
+            <p>
+                ${Math.round(pourcentage)} % de progression
+            </p>
+
+        </div>
+
+    `;
+}
+
+
+function ouvrirObjectifs() {
+
+    document.getElementById("formulaireObjectifs").style.display =
+        "block";
+
+    if (objectifs) {
+
+        document.getElementById("objectif50").value =
+            objectifs.temps50 || "";
+
+        document.getElementById("objectif100").value =
+            objectifs.temps100 || "";
+
+        document.getElementById("objectifTractions").value =
+            objectifs.tractions || "";
+
+    }
+
+}
+
+
+function sauvegarderObjectifs() {
+
+    const temps50Objectif =
+        parseFloat(
+            document.getElementById("objectif50").value
+        );
+
+    const temps100Objectif =
+        parseFloat(
+            document.getElementById("objectif100").value
+        );
+
+    const tractionsObjectif =
+        parseFloat(
+            document.getElementById("objectifTractions").value
+        );
+
+
+    objectifs = {
+
+        temps50: !isNaN(temps50Objectif)
+            ? temps50Objectif
+            : "",
+
+        temps100: !isNaN(temps100Objectif)
+            ? temps100Objectif
+            : "",
+
+        tractions: !isNaN(tractionsObjectif)
+            ? tractionsObjectif
+            : ""
+
+    };
+
+
+    localStorage.setItem(
+        "objectifsAthleteTrack",
+        JSON.stringify(objectifs)
+    );
+
+
+    afficherObjectifs();
+
+
+    document.getElementById("formulaireObjectifs").style.display =
+        "none";
+
+
+    alert("🎯 Objectifs sauvegardés !");
+
+}
+
+
+/* =========================
+   HISTORIQUE
+========================= */
+
+const zoneHistorique =
+    document.getElementById("historique");
+
+
+if (historique.length === 0) {
+
+    zoneHistorique.innerHTML =
+        "<p>❌ Aucun historique trouvé.</p>";
+
+} else {
+
+    zoneHistorique.innerHTML = "";
+
+    historique.forEach(function(performance) {
+
+        const resultat =
+            document.createElement("div");
+
+        resultat.className = "resultat";
+
+        resultat.innerHTML =
+            "<strong>📅 " + performance.date + "</strong><br><br>" +
+            "🏃 50 m : " + performance.temps50 + " s<br>" +
+            "🏃 100 m : " + performance.temps100 + " s<br>" +
+            "💪 Tractions : " + performance.tractions;
+
+        zoneHistorique.appendChild(resultat);
+
+    });
+
+}
+
+
+/* =========================
+   RECORDS
+========================= */
+
+const zoneRecords =
+    document.getElementById("records");
+
+
+zoneRecords.innerHTML = `
+
+    <div class="record">
+        ⚡ 50 m
+        <strong>
+            ${meilleur50 !== null ? meilleur50 + " s" : "-"}
+        </strong>
+    </div>
+
+    <div class="record">
+        🏃 100 m
+        <strong>
+            ${meilleur100 !== null ? meilleur100 + " s" : "-"}
+        </strong>
+    </div>
+
+    <div class="record">
+        💪 Tractions
+        <strong>
+            ${maxTractions !== null ? maxTractions : "-"}
+        </strong>
+    </div>
+
+`;
+
+
+/* =========================
+   GRAPHIQUE 50 M
+========================= */
+
+const canvas =
+    document.getElementById("graphique50");
+
+const ctx =
+    canvas.getContext("2d");
+
+
+const valeurs = historique
+    .map(function(performance) {
+
+        return parseFloat(
+            String(performance.temps50)
+                .replace(",", ".")
+        );
+
+    })
+    .filter(function(valeur) {
+
+        return !isNaN(valeur);
+
+    });
+
+
+if (valeurs.length > 0) {
+
+    const marge = 50;
+
+    const largeur =
+        canvas.width - marge * 2;
+
+    const hauteur =
+        canvas.height - marge * 2;
+
+    const maximum =
+        Math.max(...valeurs);
+
+    const minimum =
+        Math.min(...valeurs);
+
+
+    ctx.beginPath();
+
+
+    valeurs.forEach(function(valeur, index) {
+
+        const x =
+            marge +
+            (index / Math.max(valeurs.length - 1, 1))
+            * largeur;
+
+
+        const y =
+            marge +
+            ((valeur - minimum) /
+            Math.max(maximum - minimum, 0.1))
+            * hauteur;
+
+
+        if (index === 0) {
+
+            ctx.moveTo(x, y);
+
+        } else {
+
+            ctx.lineTo(x, y);
+
+        }
+
+    });
+
+
+    ctx.stroke();
+
+}
+
+
+/* =========================
+   LANCEMENT
+========================= */
+
+afficherObjectifs();
+
+</script></body></html>
