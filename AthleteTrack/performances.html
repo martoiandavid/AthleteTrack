@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Performances - AthleteTrack</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #17202a;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        .conteneur {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .titre {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .titre h2 {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .titre p {
+            color: #667085;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h3 {
+            font-size: 25px;
+        }
+
+        .performances {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .carte {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .carte p {
+            color: #667085;
+            margin-bottom: 10px;
+        }
+
+        .valeur {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .sport {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .retour {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 13px 22px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 700px) {
+            .performances {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                padding: 20px;
+            }
+
+            nav a {
+                margin-left: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+
+        <h1>🏃 AthleteTrack</h1>
+
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="profil.html">Profil</a>
+            <a href="performances.html">Performances</a>
+            <a href="progression.html">Progression</a>
+            <a href="statistiques.html">Statistiques</a>
+        </nav>
+
+    </header>
+
+
+    <main class="conteneur">
+
+        <div class="titre">
+
+            <h2>📊 Mes performances</h2>
+
+            <p>
+                Retrouve ici tes meilleurs résultats sportifs.
+            </p>
+
+        </div>
+
+
+        <section class="section">
+
+            <h3>🏃 Vitesse</h3>
+
+            <div class="performances">
+
+                <div class="carte">
+                    <p>50 mètres</p>
+                    <div class="valeur">6,90 s</div>
+                </div>
+
+                <div class="carte">
+                    <p>100 mètres</p>
+                    <div class="valeur">13,4 s</div>
+                </div>
+
+                <div class="carte">
+                    <p>400 mètres</p>
+                    <div class="valeur">1:08</div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="section">
+
+            <h3>💪 Force</h3>
+
+            <div class="performances">
+
+                <div class="carte">
+                    <p>Tractions maximum</p>
+                    <div class="valeur">10</div>
+                </div>
+
+                <div class="carte">
+                    <p>Pompes maximum</p>
+                    <div class="valeur">40</div>
+                </div>
+
+                <div class="carte">
+                    <p>Dips maximum</p>
+                    <div class="valeur">20</div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="section">
+
+            <h3>🫁 Endurance</h3>
+
+            <div class="performances">
+
+                <div class="carte">
+                    <p>VMA</p>
+                    <div class="valeur">16 km/h</div>
+                </div>
+
+                <div class="carte">
+                    <p>Test Yo-Yo</p>
+                    <div class="valeur">—</div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="section">
+
+            <h3>🏅 Sports pratiqués</h3>
+
+            <div class="sport">
+
+                <p><strong>Sport principal :</strong> Rugby</p>
+
+                <p><strong>Autre sport :</strong> Athlétisme</p>
+
+            </div>
+
+        </section>
+
+
+        <a class="retour" href="index.html">
+            ← Retour à l'accueil
+        </a>
+
+    </main>
+<section class="section">
+
+    <h3>✏️ Modifier mes performances</h3>
+
+    <div class="sport">
+
+        <p>
+            <strong>50 mètres :</strong><br>
+            <input type="text" id="input50" placeholder="Ex : 6,90">
+        </p>
+
+        <p>
+            <strong>100 mètres :</strong><br>
+            <input type="text" id="input100" placeholder="Ex : 13,4">
+        </p>
+
+        <p>
+            <strong>Tractions :</strong><br>
+            <input type="number" id="inputTractions" placeholder="Ex : 10">
+        </p>
+
+        <button onclick="enregistrer()">Enregistrer mes performances</button>
+
+    </div>
+
+</section>
+<script>
+
+function enregistrer() {
+
+    let temps50 = document.getElementById("input50").value;
+    let temps100 = document.getElementById("input100").value;
+    let tractions = document.getElementById("inputTractions").value;
+
+    // Récupérer l'ancien historique
+    let historique = JSON.parse(localStorage.getItem("historique")) || [];
+
+    // Ajouter le nouveau résultat
+    historique.push({
+        date: new Date().toLocaleDateString("fr-FR"),
+        temps50: temps50,
+        temps100: temps100,
+        tractions: tractions
+    });
+
+    // Sauvegarder l'historique
+    localStorage.setItem("historique", JSON.stringify(historique));
+
+    // Sauvegarder les dernières performances
+    localStorage.setItem("temps50", temps50);
+    localStorage.setItem("temps100", temps100);
+    localStorage.setItem("tractions", tractions);
+
+    alert("🔥 Performance enregistrée !");
+}
+
+
+function chargerPerformances() {
+
+    document.getElementById("input50").value =
+        localStorage.getItem("temps50") || "";
+
+    document.getElementById("input100").value =
+        localStorage.getItem("temps100") || "";
+
+    document.getElementById("inputTractions").value =
+        localStorage.getItem("tractions") || "";
+
+}
+
+chargerPerformances();
+
+</script>
+</body>
+</html>

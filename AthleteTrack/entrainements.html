@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Entraînements - AthleteTrack</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #17202a;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+        }
+
+        .conteneur {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .titre {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .carte {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 18px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 14px 22px;
+            border: none;
+            border-radius: 10px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .seance {
+            background: #f4f6f8;
+            padding: 18px;
+            margin-top: 15px;
+            border-radius: 12px;
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<header>
+
+    <h1>🏃 AthleteTrack</h1>
+
+    <nav>
+        <a href="index.html">Accueil</a>
+        <a href="profil.html">Profil</a>
+        <a href="performances.html">Performances</a>
+        <a href="progression.html">Progression</a>
+        <a href="entrainements.html">Entraînements</a>
+        <a href="statistiques.html">Statistiques</a>
+    </nav>
+
+</header>
+
+
+<main class="conteneur">
+
+    <div class="titre">
+
+        <h2>🏋️ Mes entraînements</h2>
+
+        <p>Enregistre et retrouve toutes tes séances.</p>
+
+    </div>
+
+
+    <div class="carte">
+
+        <h3>➕ Ajouter une séance</h3>
+
+
+        <label for="date">Date</label>
+        <input type="date" id="date">
+
+
+        <label for="sport">Sport</label>
+
+        <select id="sport">
+<option value="Sprint">⚡ Sprint</option>
+<option value="Demi-fond">🏃 Demi-fond</option>
+<option value="Course à pied">🏃 Course à pied</option>
+<option value="Musculation">💪 Musculation</option>
+<option value="Street workout">🦍 Street workout</option>
+<option value="Calisthenics">🤸 Calisthenics</option>
+<option value="Natation">🏊 Natation</option>
+<option value="Sport de combat">🥊 Sport de combat</option>
+<option value="Rugby">🏉 Rugby</option>
+<option value="Foot">⚽ Foot</option>
+<option value="Cyclisme">🚴 Cyclisme</option>
+<option value="Autre">➕ Autre</option>
+
+            
+        </select>
+
+
+        <label for="seance">Type de séance</label>
+
+        <input
+            type="text"
+            id="seance"
+            placeholder="Ex : Force, sprint, technique..."
+        >
+
+
+        <label for="exercices">Exercices</label>
+
+        <textarea
+            id="exercices"
+            placeholder="Ex : Tractions 4x8&#10;Dips 4x10&#10;Pompes 3x15"
+        ></textarea>
+
+
+        <label for="duree">Durée</label>
+
+        <input
+            type="text"
+            id="duree"
+            placeholder="Ex : 1h15"
+        >
+
+<label for="intensite">🔥 Intensité</label>
+
+<select id="intensite">
+
+    <option value="Facile 🟢">Facile 🟢</option>
+    <option value="Moyenne 🟠">Moyenne 🟠</option>
+    <option value="Difficile 🔴">Difficile 🔴</option>
+
+</select>
+        <label for="notes">Notes</label>
+
+        <textarea
+            id="notes"
+            placeholder="Comment s'est passée la séance ?"
+        ></textarea>
+
+
+        <button onclick="enregistrerSeance()">
+            💾 Enregistrer la séance
+        </button>
+
+    </div>
+
+
+    <div class="carte">
+
+        <h3>📅 Mes séances</h3>
+
+        <div id="listeSeances">
+            Chargement...
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+
+function enregistrerSeance() {
+
+    const date = document.getElementById("date").value;
+    const sport = document.getElementById("sport").value;
+    const seance = document.getElementById("seance").value;
+    const exercices = document.getElementById("exercices").value;
+    const duree = document.getElementById("duree").value;
+    const notes = document.getElementById("notes").value;
+const intensite = document.getElementById("intensite").value;
+
+
+    if (!date || !seance) {
+
+        alert("⚠️ Mets au minimum une date et le type de séance.");
+
+        return;
+
+    }
+
+
+    const entrainements =
+        JSON.parse(localStorage.getItem("entrainements") || "[]");
+
+
+    entrainements.push({
+
+        date: date,
+        sport: sport,
+        seance: seance,
+        exercices: exercices,
+        duree: duree,
+        notes: notes,
+        intensite: intensite
+
+    });
+
+
+    localStorage.setItem(
+        "entrainements",
+        JSON.stringify(entrainements)
+    );
+
+
+    alert("🔥 Séance enregistrée !");
+
+
+    afficherSeances();
+
+}
+
+
+function afficherSeances() {
+
+    const entrainements =
+        JSON.parse(localStorage.getItem("entrainements") || "[]");
+
+    const zone =
+        document.getElementById("listeSeances");
+
+
+    if (entrainements.length === 0) {
+
+        zone.innerHTML =
+            "<p>Aucune séance enregistrée.</p>";
+
+        return;
+
+    }
+
+
+    zone.innerHTML = "";
+
+
+    entrainements
+        .slice()
+        .reverse()
+        .forEach(function(seance) {
+
+            const bloc =
+                document.createElement("div");
+
+            bloc.className = "seance";
+
+
+            bloc.innerHTML =
+
+                "<strong>📅 " + seance.date + "</strong>" +
+                "<br><br>" +
+
+                "🏅 Sport : " + seance.sport +
+                "<br>" +
+
+                "🔥 Séance : " + seance.seance +
+                "<br><br>" +
+
+                "💪 Exercices :<br>" +
+                seance.exercices.replace(/\n/g, "<br>") +
+
+                "<br><br>" +
+
+                "⏱️ Durée : " + seance.duree +
+"<br><br>" +
+"🔥 Intensité : " + seance.intensite +
+                "<br><br>" +
+
+                "📝 Notes :<br>" +
+                seance.notes.replace(/\n/g, "<br>");
+
+
+            zone.appendChild(bloc);
+
+        });
+
+}
+
+
+afficherSeances();
+
+</script>
+
+</body>
+
+</html>

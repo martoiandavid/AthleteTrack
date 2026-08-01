@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AthleteTrack</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #17202a;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            background: white;
+        }
+
+        .hero h2 {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #667085;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 15px 25px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 60px 20px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            width: 250px;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            font-size: 22px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #111827;
+            color: white;
+        }
+        .stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.stat {
+    background: #f4f6f8;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.stat strong {
+    display: block;
+    font-size: 28px;
+    margin-top: 8px;
+}
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🏃 AthleteTrack</h1>
+
+        <nav>
+    <a href="index.html">Accueil</a>
+    <a href="performances.html">Performances</a>
+    <a href="entrainements.html">Entraînements</a>
+    <a href="profil.html">Profil</a>
+    <a href="progression.html">Progression</a>
+    <a href="calendrier.html">Calendrier</a>
+    <a href="statistiques.html">Statistiques</a>
+</nav>
+    </header>
+
+    <section class="hero">
+        <h2>Ta progression. Ton objectif. Ton sport.</h2>
+
+        <p>
+            AthleteTrack t'aide à suivre tes entraînements,
+            tes performances et ta progression.
+        </p>
+
+    <a class="button" href="performances.html">Commencer</a>
+    </section>
+
+    <section class="cards">
+
+        <div class="card">
+            <h3>📊 Performances</h3>
+            <p>Enregistre tes temps, records et résultats.</p>
+        </div>
+
+        <div class="card">
+            <h3>🏋️ Entraînements</h3>
+            <p>Garde une trace de toutes tes séances.</p>
+        </div>
+
+        <div class="card">
+            <h3>🎯 Objectifs</h3>
+            <p>Fixe tes objectifs et suis ta progression.</p>
+        </div>
+
+    </section>
+
+    <footer>
+        © 2026 AthleteTrack
+    </footer>
+<section class="carte">
+<p style="font-size: 14px; opacity: 0.7;">
+    Tes performances en un coup d'œil
+</p>
+    <h2>📊 Mon résumé sportif</h2>
+
+    <div id="resumeSportif">
+        Chargement...
+    </div>
+
+</section>
+<script>
+
+const resume = document.getElementById("resumeSportif");
+
+const performances =
+    JSON.parse(localStorage.getItem("historique") || "[]");
+
+const entrainements =
+    JSON.parse(localStorage.getItem("entrainements") || "[]");
+
+
+let meilleur50 = "-";
+let meilleur100 = "-";
+let maxTractions = "-";
+
+
+if (performances.length > 0) {
+
+    const temps50 = performances
+        .map(p => parseFloat(String(p.temps50).replace(",", ".")))
+        .filter(n => !isNaN(n));
+
+    const temps100 = performances
+        .map(p => parseFloat(String(p.temps100).replace(",", ".")))
+        .filter(n => !isNaN(n));
+
+    const tractions = performances
+        .map(p => parseFloat(String(p.tractions).replace(",", ".")))
+        .filter(n => !isNaN(n));
+
+
+    if (temps50.length)
+        meilleur50 = Math.min(...temps50) + " s";
+
+    if (temps100.length)
+        meilleur100 = Math.min(...temps100) + " s";
+
+    if (tractions.length)
+        maxTractions = Math.max(...tractions);
+
+}
+
+
+const aujourdHui = new Date();
+
+const debutSemaine = new Date(aujourdHui);
+
+debutSemaine.setDate(
+    aujourdHui.getDate() - aujourdHui.getDay() + 1
+);
+
+debutSemaine.setHours(0, 0, 0, 0);
+
+
+const entrainementsCetteSemaine =
+    entrainements.filter(seance => {
+
+        const dateSeance = new Date(seance.date);
+
+        return dateSeance >= debutSemaine &&
+               dateSeance <= aujourdHui;
+
+    }).length;
+
+
+resume.innerHTML = `
+
+
+    <div class="stats">
+
+        <div class="stat">
+            🏃 50 m
+            <strong>${meilleur50}</strong>
+        </div>
+
+        <div class="stat">
+            🏃 100 m
+            <strong>${meilleur100}</strong>
+        </div>
+
+        <div class="stat">
+            💪 Tractions
+            <strong>${maxTractions}</strong>
+        </div>
+
+        <div class="stat">
+            🏋️ Séances
+            <strong>${entrainements.length}</strong>
+        </div>
+
+        <div class="stat">
+            🔥 Cette semaine
+            <strong>${entrainementsCetteSemaine}</strong>
+        </div>
+
+    </div>
+
+`;
+
+</script>
+</body>
+</html>
